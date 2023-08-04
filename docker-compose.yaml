@@ -1,0 +1,22 @@
+services:
+  mariadb:
+    image: mariadb:lts
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: root-password
+      MYSQL_DATABASE: database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  bot:
+    image: bigpoint/discord-bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+volumes:
+  data:
