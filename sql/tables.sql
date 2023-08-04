@@ -37,9 +37,10 @@ CREATE TABLE IF NOT EXISTS `guild_bans` (
 
 CREATE TABLE IF NOT EXISTS `guild_forum_rss_urls` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `guild_id` int(11) NOT NULL,
-  `channel_id` int(11) NOT NULL,
-  `rss_url` int(11) NOT NULL,
+  `guild_id` varchar(50) NOT NULL,
+  `channel_id` varchar(50) NOT NULL,
+  `rss_url` varchar(2000) NOT NULL,
+  `rss_type` int(11) NOT NULL DEFAULT 1,
   `interval` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
