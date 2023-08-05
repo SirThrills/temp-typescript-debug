@@ -5,10 +5,12 @@
         "build": "tsc --build"
     },
     "devDependencies": {
+        "@types/mysql": "^2.15.21",
         "typescript": "^5.1.6"
     },
     "dependencies": {
         "discord.js": "^14.12.1",
-        "dotenv": "^16.3.1"
+        "dotenv": "^16.3.1",
+        "mysql2": "^3.6.0"
     }
 }

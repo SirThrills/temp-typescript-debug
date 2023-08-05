@@ -1,2 +1,5 @@
 .dist
 sql
+.vscode
+.github
+.gitignore

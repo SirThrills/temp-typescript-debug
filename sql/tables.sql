@@ -7,54 +7,11 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE TABLE IF NOT EXISTS `forum_rss_posts` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `forum_rss_id` int(11) NOT NULL,
-  `post_url` varchar(2000) NOT NULL,
-  `post_id` varchar(50) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 CREATE TABLE IF NOT EXISTS `guilds` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `guild_id` varchar(50) NOT NULL,
-  `guild_name` varchar(50) NOT NULL,
-  `guild_icon` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE IF NOT EXISTS `guild_bans` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `guild_id` varchar(50) NOT NULL,
-  `author_id` varchar(50) NOT NULL,
-  `author_name` varchar(50) NOT NULL,
-  `target_id` varchar(50) NOT NULL,
-  `target_name` varchar(50) DEFAULT NULL,
-  `reason` varchar(6000) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE IF NOT EXISTS `guild_forum_rss_urls` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `guild_id` varchar(50) NOT NULL,
-  `channel_id` varchar(50) NOT NULL,
-  `rss_url` varchar(2000) NOT NULL,
-  `rss_type` int(11) NOT NULL DEFAULT 1,
-  `interval` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE IF NOT EXISTS `guild_warnings` (
-  `id` int(11) NOT NULL DEFAULT 0,
-  `guild_id` varchar(50) NOT NULL,
-  `author_id` varchar(50) NOT NULL,
-  `author_name` varchar(50) NOT NULL,
-  `target_id` varchar(50) NOT NULL,
-  `target_name` varchar(50) NOT NULL,
-  `reason` varchar(50) NOT NULL,
-  `points` int(11) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `guild_name` varchar(255) NOT NULL,
+  `guild_icon` varchar(2000) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
