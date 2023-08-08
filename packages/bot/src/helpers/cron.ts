@@ -1,6 +1,6 @@
 import { Client, Guild } from "discord.js";
-import { getGuildRssFeeds } from "./database/guild";
 import { processGuildRssFeed, processGuildRssQueue } from "./rss";
+import { getGuildRssFeeds } from "./database/rss";
 
 const processGuildUpdates = async (guild: Guild) => {
 }

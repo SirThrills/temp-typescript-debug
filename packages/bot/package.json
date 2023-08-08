@@ -1,0 +1,19 @@
+{
+    "name": "bot",
+    "scripts": {
+        "build": "yarn tsc --build"
+    },
+    "devDependencies": {
+        "@types/mysql": "^2.15.21",
+        "typescript": "^5.1.6"
+    },
+    "dependencies": {
+        "cron": "^2.4.0",
+        "discord.js": "^14.12.1",
+        "dotenv": "^16.3.1",
+        "mysql2": "^3.6.0",
+        "node-html-parser": "^6.1.5",
+        "rss-parser": "^3.13.0"
+    },
+    "packageManager": "yarn@3.6.1"
+}

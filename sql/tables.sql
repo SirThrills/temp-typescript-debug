@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS `guild_forum_rss_posts` (
   `post_url` varchar(2000) NOT NULL,
   `post_content` varchar(6000) DEFAULT NULL,
   `post_id` varchar(50) NOT NULL,
+  `post_image` varchar(2000) DEFAULT NULL,
   `timestamp` timestamp NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -55,8 +56,9 @@ CREATE TABLE IF NOT EXISTS `guild_forum_rss_urls` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `guild_id` varchar(50) NOT NULL,
   `channel_id` varchar(50) NOT NULL,
+  `ping_role_id` varchar(50) DEFAULT NULL,
   `embed_color` varchar(50) DEFAULT NULL,
-  `embed_image` varchar(2000) DEFAULT NULL,
+  `embed_image` varchar(2000) NOT NULL,
   `rss_url` varchar(2000) NOT NULL,
   `rss_type` int(11) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)

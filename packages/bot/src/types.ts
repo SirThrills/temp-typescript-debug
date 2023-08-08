@@ -44,6 +44,7 @@ export type GuildRssFeedItem = {
     id: number
     guild_id: string
     channel_id: string
+    ping_role_id?: string
     embed_color?: ColorResolvable
     embed_image?: string
     rss_url: string
