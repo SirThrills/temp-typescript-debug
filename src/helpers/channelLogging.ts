@@ -1,6 +1,7 @@
-import { ChannelType, Client, EmbedBuilder, GuildChannel } from "discord.js";
-import { ChannelLogRecord, ChannelLogRecordType, GuildChannelLogModel } from "../types";
-import { mysqlClient } from "./database";
+import { ChannelType, Client } from "discord.js";
+import { ChannelLogRecord, ChannelLogRecordType } from "../types";
+import { mysqlClient } from "./database/client";
+import { createEmbed } from "./embed";
 
 export const addChannelLogRecord = async (client: Client, record: ChannelLogRecord) => {
     const guild = client.guilds.cache.find((guild) => guild.id === record.guild)
@@ -22,22 +23,7 @@ export const addChannelLogRecord = async (client: Client, record: ChannelLogReco
         return
     }
 
-    const embed = new EmbedBuilder()
-    embed.setTitle(titleAndColor.title)
-    embed.setColor(titleAndColor.color)
-    if (record.url) {
-        embed.setURL(record.url)
-    }
-    if (record.description) {
-        embed.setDescription(record.description)
-    }
-    if (record.fields) {
-        embed.addFields(record.fields)
-    }
-    if (record.timestamp == null || record.timestamp) {
-        embed.setTimestamp()
-    }
-
+    const embed = createEmbed({ title: titleAndColor.title, color: titleAndColor.color, url: record.url, description: record.description, fields: record.fields, timestamp: record.timestamp })
     await channel.send({ embeds: [embed] })
 }
 

@@ -15,6 +15,72 @@ CREATE TABLE IF NOT EXISTS `guilds` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE IF NOT EXISTS `guild_bans` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `guild_id` varchar(50) NOT NULL,
+  `author_id` varchar(50) NOT NULL,
+  `author_name` varchar(50) NOT NULL,
+  `target_id` varchar(50) NOT NULL,
+  `target_name` varchar(50) DEFAULT NULL,
+  `reason` varchar(6000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `guild_channel_logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `guild_id` varchar(50) NOT NULL,
+  `channel_id` varchar(50) NOT NULL,
+  `channel_type` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `guild_forum_rss_posts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `forum_rss_id` int(11) NOT NULL,
+  `post_url` varchar(2000) NOT NULL,
+  `post_content` varchar(6000) DEFAULT NULL,
+  `post_id` varchar(50) NOT NULL,
+  `timestamp` timestamp NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `guild_forum_rss_post_queue` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `post_id` int(11) NOT NULL,
+  `guild_id` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `guild_forum_rss_urls` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `guild_id` varchar(50) NOT NULL,
+  `channel_id` varchar(50) NOT NULL,
+  `embed_color` varchar(50) DEFAULT NULL,
+  `embed_image` varchar(2000) DEFAULT NULL,
+  `rss_url` varchar(2000) NOT NULL,
+  `rss_type` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `guild_timeouts` (
+  `id` int(11) DEFAULT NULL,
+  `guild_id` varchar(50) DEFAULT NULL,
+  `target_id` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `guild_warnings` (
+  `id` int(11) NOT NULL DEFAULT 0,
+  `guild_id` varchar(50) NOT NULL,
+  `author_id` varchar(50) NOT NULL,
+  `author_name` varchar(50) NOT NULL,
+  `target_id` varchar(50) NOT NULL,
+  `target_name` varchar(50) NOT NULL,
+  `reason` varchar(50) NOT NULL,
+  `points` int(11) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;

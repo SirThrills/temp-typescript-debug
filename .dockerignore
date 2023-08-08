@@ -3,3 +3,12 @@ sql
 .vscode
 .github
 .gitignore
+node_modules
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+docker-compose.yaml

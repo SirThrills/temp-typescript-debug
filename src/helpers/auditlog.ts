@@ -1,6 +1,6 @@
 import { AuditLogEvent, Client, GuildAuditLogsEntry, GuildBan } from "discord.js";
 
-export const getBanAuditLogUser = async (client: Client, ban: GuildBan) => {
+export const getBanAuditLogAuthor = async (client: Client, ban: GuildBan) => {
     const guild = client.guilds.cache.find(guild => guild.id === ban.guild.id)
     if (guild == null) {
         return
