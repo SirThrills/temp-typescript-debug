@@ -1,4 +1,11 @@
 {
     "name": "ui",
-    "packageManager": "yarn@3.6.1"
+    "packageManager": "yarn@3.6.1",
+    "scripts": {
+        "watch-sass": "yarn sass --watch src/app.scss src/public/app/app.min.css --style compressed --no-source-map --poll"
+    },
+    "devDependencies": {
+        "bootstrap": "5.3.1",
+        "sass": "^1.64.2"
+    }
 }
