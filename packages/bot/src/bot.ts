@@ -7,6 +7,7 @@ import { addGuild, removeGuild, updateActiveGuilds } from './helpers/database/gu
 import { getBanAuditLogAuthor } from './helpers/auditlog'
 import { CronJob } from 'cron'
 import { processGuildRssFeeds, processGuildRssQueues, processGuildsUpdates } from './helpers/cron'
+import { expressApiApp } from './api'
 
 dotenv.config()
 
@@ -25,6 +26,8 @@ client.on('ready', async () => {
         console.log('Failed to update active guilds')
         console.log(err)
     }
+
+    expressApiApp(client)
 })
 
 client.on('guildBanAdd', async (ban) => {

@@ -18,7 +18,7 @@ const stripTags = (str: string) => {
     //     .replace(/(<([^>]+)>)/ig, '')
     //     .replace(/\n+/g, "\n")
     // Return a blank string for now until we figure out a better method of parsing a varying array of forum post tags
-    return ''
+    return 'N/A'
 }
 
 export const processRssItem = async (item: {

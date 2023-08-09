@@ -1,6 +1,6 @@
 discord_client_id=
 discord_client_secret=
-discord_client_scopes="identify guilds"
+discord_client_scopes="identify guilds guilds.members.read"
 discord_redirect_uri=
 
 mysql_host=

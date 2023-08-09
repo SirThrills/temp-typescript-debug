@@ -4,14 +4,14 @@ User Administration, RSS Feeds, Web UI (Seperate Repo)
 
 ## Setup
 
-Copy `.env.default` to `.env`
+Create a .env at the root
 
-Get discord token from Discord Developer Portal and set `BOT_TOKEN` with it
+Get discord token from Discord Developer Portal and set `BOT_TOKEN`  in the .env file.
 
-Start mariadb with docker compose `docker compose up mariadb -d`
+Start non-essential services with docker compose `docker compose up mariadb nginx php -d`
 
-Import the sql from `sql/tables.sql`
+Import the sql from `sql/tables.sql` into a new database on the mariadb container
 
-Start the bot with `docker compose up bot -d`
+Start the discord bot container with `docker compose up bot`
 
-To rebuild the bot image and not restart mariadb, run `docker compose up --build bot` or `docker compose up --build bot -d` for detached mode
+To rebuild the bot image and not restart other services, run `docker compose up --build bot` or `docker compose up --build bot -d` for detached mode

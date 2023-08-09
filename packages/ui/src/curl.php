@@ -4,7 +4,7 @@ enum CURL_TYPE: string {
     case POST = "POST";
 }
 
-function send_curl_request(string $url, CURL_TYPE $type, ?array $headers = null, ?array $fields = null): ?array
+function send_curl_request(string $url, CURL_TYPE $type, ?array $headers = null, ?array $fields = null, ?int $expect_response_code = 200): ?array
 {
     $ch = curl_init();
 
@@ -22,6 +22,12 @@ function send_curl_request(string $url, CURL_TYPE $type, ?array $headers = null,
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
     $result = curl_exec($ch);
+    $response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    if($response_code != $expect_response_code){
+        error_log("Response code {$response_code} does not match expected code {$expect_response_code}");
+        return null;
+    }
 
     if($result == null){
         die('No api response');

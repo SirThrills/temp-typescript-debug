@@ -15,3 +15,8 @@ docker-compose.yaml
 
 packages/*
 !packages/bot
+
+yarn-error.log
+.git
+Dockerfile*
+.env.default

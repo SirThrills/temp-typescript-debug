@@ -1,0 +1,11 @@
+FROM node:20-slim
+
+WORKDIR /opt/app
+COPY . .
+RUN yarn install
+RUN yarn workspace bot build
+
+WORKDIR /opt/app/packages/bot
+USER node
+
+CMD ["node", "dist/bot.js"]
