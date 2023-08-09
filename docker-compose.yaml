@@ -23,6 +23,8 @@ services:
       DB_PASS: password
       DB_NAME: database
       NODE_ENV: local
+    ports: 
+      - "8081:8081"
   nginx:
     image: nginx:latest
     ports:

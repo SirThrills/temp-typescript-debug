@@ -31,7 +31,6 @@ const getChannel = async (record: ChannelLogRecord): Promise<string | undefined>
     const client = (await mysqlClient()).getConn()
     const [rows, _fields] = await client.execute<any[]>('SELECT * FROM `guild_channel_logs` WHERE `guild_id` = ? AND `channel_type` = ?', [record.guild, record.type])
     await client.end()
-    console.log('db rows:', rows, 'params:', [record.guild, record.type])
     if (rows == null || rows.length !== 1) {
         return
     }

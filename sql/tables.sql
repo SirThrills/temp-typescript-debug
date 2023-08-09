@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `guilds` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `guild_id` varchar(50) NOT NULL,
   `guild_name` varchar(255) NOT NULL,
-  `guild_icon` varchar(2000) NOT NULL,
+  `guild_icon` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -64,6 +64,14 @@ CREATE TABLE IF NOT EXISTS `guild_forum_rss_urls` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE IF NOT EXISTS `guild_role_permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `guild_id` varchar(50) NOT NULL,
+  `role_id` varchar(50) NOT NULL,
+  `permission` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 CREATE TABLE IF NOT EXISTS `guild_timeouts` (
   `id` int(11) DEFAULT NULL,
   `guild_id` varchar(50) DEFAULT NULL,
@@ -80,6 +88,15 @@ CREATE TABLE IF NOT EXISTS `guild_warnings` (
   `reason` varchar(50) NOT NULL,
   `points` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `web_sessions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `auth_token` varchar(250) NOT NULL,
+  `user_id` varchar(50) NOT NULL,
+  `expires_in` int(11) NOT NULL,
+  `added` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

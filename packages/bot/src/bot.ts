@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import { addChannelLogRecord } from './helpers/channelLogging'
 import { ChannelLogRecordType } from './types'
 import { sleep } from './helpers/sleep'
-import { addGuild, removeGuild, updateActiveGuilds } from './helpers/database/guild'
+import { addGuild, removeGuild, updateActiveGuilds, updateGuild } from './helpers/database/guild'
 import { getBanAuditLogAuthor } from './helpers/auditlog'
 import { CronJob } from 'cron'
 import { processGuildRssFeeds, processGuildRssQueues, processGuildsUpdates } from './helpers/cron'
@@ -11,7 +11,7 @@ import { expressApiApp } from './api'
 
 dotenv.config()
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] })
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences] })
 const env = process.env.NODE_ENV || 'local'
 
 client.on('ready', async () => {
@@ -53,12 +53,29 @@ client.on('guildBanRemove', async (ban) => {
     await addChannelLogRecord(client, { guild: ban.guild.id, type: ChannelLogRecordType.UNBAN, fields })
 })
 
+client.on('guildUpdate', async (guild) => {
+    const updatedGuild = await client.guilds.fetch(guild.id)
+    try {
+        await updateGuild(updatedGuild)
+    } catch (err) {
+        console.log(err)
+    }
+})
+
 client.on('guildCreate', async (guild) => {
-    await addGuild(guild)
+    try {
+        await addGuild(guild)
+    } catch (err) {
+        console.log(err)
+    }
 })
 
 client.on('guildDelete', async (guild) => {
-    await removeGuild(guild.id)
+    try {
+        await removeGuild(guild.id)
+    } catch (err) {
+        console.log(err)
+    }
 })
 
 const createCronJobs = (client: Client) => {

@@ -1,9 +1,11 @@
+api_host="bot:8081"
+
 discord_client_id=
 discord_client_secret=
 discord_client_scopes="identify guilds guilds.members.read"
-discord_redirect_uri=
+discord_redirect_uri=http://localhost:8081/
 
-mysql_host=
-mysql_user=
-mysql_password=
-mysql_database=
+mysql_host=mariadb
+mysql_user=user
+mysql_password=password
+mysql_database=database

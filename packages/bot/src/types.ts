@@ -1,4 +1,4 @@
-import { ColorResolvable } from "discord.js"
+import { ColorResolvable, GuildMember } from "discord.js"
 
 export enum ChannelLogRecordType {
     BAN,
@@ -76,4 +76,32 @@ export type EmbedItem = {
     description?: string
     fields?: EmbedField[]
     timestamp?: boolean
+}
+
+export type PermissionItem = {
+    id: number
+    guild_id: string
+    role_id: string
+    permission: Permission
+}
+
+export type BotGuildItem = GuildItem & {
+    permissions?: PermissionItem[]
+}
+
+export type BotGuildItemMember = GuildItem & {
+    permissions?: PermissionItem[]
+    member: GuildMember
+    isOwner?: boolean
+}
+
+export enum Permission {
+    VIEW_SERVER = 1,
+}
+
+export type BotGuild = {
+    id: string
+    name: string
+    icon?: string
+    owner: number
 }

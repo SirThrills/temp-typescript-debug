@@ -9,6 +9,7 @@ if(empty($_GET['code']) || strlen($_GET['code']) > 256){
 }
 
 require_once(dirname(__DIR__) . '/core.php');
+require_once(dirname(__DIR__) . '/controllers/discord/user.php');
 
 function validate_result(?array $result): bool
 {
@@ -98,9 +99,10 @@ if(session_status() == PHP_SESSION_ACTIVE){
 }
 session_start();
 
-$_SESSION['access_token'] = $result['access_token'];
-$_SESSION['expires_in'] = $result['expires_in'];
-$_SESSION['refresh_token'] = $result['refresh_token'];
-$_SESSION['scopes'] = explode(' ', $result['scope']);
+$me = get_me($result['access_token']);
+if($me == null || !isset($me['id'])){
+    die('error retrieving user info');
+}
+add_session($result, $me);
 
 header('Location: index.php');

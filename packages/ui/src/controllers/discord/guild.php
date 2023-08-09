@@ -3,16 +3,32 @@ require_once(dirname(__DIR__, 2) . '/core.php');
 
 // Technically not a controller yet, POC is using functions only
 
-function get_user_guilds()
+function get_user_guilds(string $access_token): ?array
 {
-    $token = $_SESSION['access_token'];
-    $res = send_curl_request('https://discord.com/api/users/@me/guilds', CURL_TYPE::GET, headers: ["Authorization: Bearer {$token}"]);
+    $res = send_curl_request("https://discord.com/api/users/@me/guilds", CURL_TYPE::GET, headers: ["Authorization: Bearer {$access_token}"]);
+    if($res == null){
+        return null;
+    }
+    return array_map('map_user_guilds', $res);
+}
+
+function get_user_available_guilds(string $access_token)
+{
+    
+    $api_url = get_string_setting('api_url');
+    if($api_url == null){
+        die('configure api_url in environment config');
+    }
+    $res = send_curl_request("{$api_url}/@me/guilds", CURL_TYPE::GET, headers: ["Authorization: Bearer {$access_token}"]);
     return $res;
 }
 
-function get_user_guild_info(string $guild_id, string $user_id)
+function map_user_guilds(array $guild): array
 {
-    $token = $_SESSION['access_token'];
-    $res = send_curl_request("https://discord.com/api/users/@me/guilds/{$guild_id}/member", CURL_TYPE::GET, headers: ["Authorization: Bearer {$token}"]);
-    return $res;
+    return [
+        'id' => $guild['id'],
+        'name' => $guild['name'],
+        'icon' => $guild['icon'],
+        'owner' => $guild['owner'],
+    ];
 }
