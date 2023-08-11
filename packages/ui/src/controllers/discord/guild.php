@@ -14,12 +14,31 @@ function get_user_guilds(string $access_token): ?array
 
 function get_user_available_guilds(string $access_token)
 {
-    
     $api_url = get_string_setting('api_url');
     if($api_url == null){
         die('configure api_url in environment config');
     }
     $res = send_curl_request("{$api_url}/@me/guilds", CURL_TYPE::GET, headers: ["Authorization: Bearer {$access_token}"]);
+    return $res;
+}
+
+function get_guild_user_permissions(string $access_token, string $guild_id)
+{
+    $api_url = get_string_setting('api_url');
+    if($api_url == null){
+        die('configure api_url in environment config');
+    }
+    $res = send_curl_request("{$api_url}/@me/guilds/{$guild_id}/permissions", CURL_TYPE::GET, headers: ["Authorization: Bearer {$access_token}"]);
+    return $res;
+}
+
+function get_guild_roles(string $access_token, string $guild_id)
+{
+    $api_url = get_string_setting('api_url');
+    if($api_url == null){
+        die('configure api_url in environment config');
+    }
+    $res = send_curl_request("{$api_url}/guilds/{$guild_id}/roles", CURL_TYPE::GET, headers: ["Authorization: Bearer {$access_token}"]);
     return $res;
 }
 

@@ -40,6 +40,9 @@ $_SESSION['user_guilds'] = $user_available_guilds;
                     <span>Fetching server info</span>
                 </div>
             </div>
+            <div class="d-flex w-100 mt-5 justify-content-center align-items-centers" id="management">
+                <?php require_once(dirname(__DIR__) . '/templates/server.html'); ?>
+            </div>
         </div>
     </main>
 </body>

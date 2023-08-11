@@ -6,8 +6,8 @@
     <hr>
     <?php foreach($user_available_guilds as $guild){?>
       <li class="nav-item">
-      <a href="#" data-server-id="<?php echo $guild['guild_id']; ?>" class="nav-link py-2 rounded-circle" aria-current="page" data-bs-toggle="tooltip" data-bs-title="<?php echo $guild['guild_name']; ?>" data-bs-placement="right" aria-label="<?php echo $guild['guild_name']; ?>">
-        <img class="bi pe-none rounded-circle" style="width:48px;height:48px;" role="img" aria-label="<?php echo $guild['guild_name']; ?>" src="<?php echo $guild['guild_icon'] ?? "https://ui-avatars.com/api/?name={$guild['guild_name']}"; ?>" />
+      <a href="#" data-server-id="<?php echo $guild['guild_id']; ?>" class="nav-link py-2" aria-current="page" data-bs-toggle="tooltip" data-bs-title="<?php echo $guild['guild_name']; ?>" data-bs-placement="right" aria-label="<?php echo $guild['guild_name']; ?>">
+        <img class="bi pe-none rounded-circle squircle" style="width:48px;height:48px;" role="img" aria-label="<?php echo $guild['guild_name']; ?>" src="<?php echo $guild['guild_icon'] ?? "https://ui-avatars.com/api/?name={$guild['guild_name']}"; ?>" />
       </a>
     </li>
     <?php } ?>

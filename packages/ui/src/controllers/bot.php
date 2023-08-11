@@ -4,6 +4,17 @@ require_once(dirname(__DIR__) . '/core.php');
 enum Permission: int
 {
     case VIEW_SERVER = 1;
+    case VIEW_ROLES = 2;
+    case VIEW_RSS = 3;
+    case VIEW_CHANNEL_LOGGING = 4;
+    case VIEW_BANS = 5;
+    case VIEW_WARNINGS = 6;
+
+    case EDIT_ROLE_PERMISSION = 102;
+    case EDIT_RSS_FEEDS = 103;
+    case EDIT_CHANNEL_LOGGING = 104;
+    case EDIT_BANS = 105;
+    case EDIT_WARNINGS = 106;
 }
 
 function get_bot_guilds(): ?array
@@ -24,7 +35,7 @@ function get_bot_guilds(): ?array
     return null;
 }
 
-function getBotGuildInfo(string $guild_id): ?array
+function get_bot_guild_info(string $guild_id): ?array
 {
     try {
         $db = new DB_HANDLER();

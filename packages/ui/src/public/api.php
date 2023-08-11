@@ -7,6 +7,7 @@ if($_SERVER['REQUEST_METHOD'] != 'POST' && $_SERVER['REQUEST_METHOD'] != 'GET'){
 
 require_once(dirname(__DIR__) . '/core.php');
 require_once(dirname(__DIR__) . '/controllers/bot.php');
+require_once(dirname(__DIR__) . '/controllers/discord_api.php');
 
 if(!is_valid_session()){
     http_response_code(401);
@@ -26,12 +27,36 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                 $response = ['code' => 400, 'error' => 'invalid_guild_id'];
                 break;
             }
-            $data = getBotGuildInfo($_POST['guildId']);
+            $data = get_bot_guild_info($_POST['guildId']);
             if($data == null){
                 $response = ['code' => 204];
                 break;
             }
             $response = ['code' => 200, 'data' => $data[0]];
+            break;
+        case 'getGuildPermissions':
+            if(!isset($_POST['guildId']) || !is_string($_POST['guildId'])){
+                $response = ['code' => 400, 'error' => 'invalid_guild_id'];
+                break;
+            }
+            $data = get_guild_user_permissions($_POST['guildId']);
+            if($data == null){
+                $response = ['code' => 204];
+                break;
+            }
+            $response = ['code' => 200, 'data' => $data];
+            break;
+        case 'getGuildRoles':
+            if(!isset($_POST['guildId']) || !is_string($_POST['guildId'])){
+                $response = ['code' => 400, 'error' => 'invalid_guild_id'];
+                break;
+            }
+            $data = get_guild_roles($_SESSION['access_token'], $_POST['guildId']);
+            if($data == null){
+                $response = ['code' => 204];
+                break;
+            }
+            $response = ['code' => 200, 'data' => $data];
             break;
         default:
             $response = ['code' => 400, 'error' => "not_implemented"];

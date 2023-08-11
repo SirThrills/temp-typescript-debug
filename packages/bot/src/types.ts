@@ -97,6 +97,11 @@ export type BotGuildItemMember = GuildItem & {
 
 export enum Permission {
     VIEW_SERVER = 1,
+    VIEW_ROLES,
+    VIEW_RSS,
+    VIEW_CHANNELS,
+    VIEW_BANS,
+    VIEW_WARNINGS
 }
 
 export type BotGuild = {
