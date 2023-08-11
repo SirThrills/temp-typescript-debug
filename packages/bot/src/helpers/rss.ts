@@ -95,7 +95,7 @@ export const processGuildRssQueue = async (client: Client, guild: Guild) => {
                 return
             }
             await removeGuildRssPostQueueItem(postQueueItem.id)
-            const rssFeedInfo = await getGuildRssFeed(post.forum_rss_id)
+            const rssFeedInfo = await getGuildRssFeed(guild.id, post.forum_rss_id)
             if (rssFeedInfo == null) {
                 return
             }

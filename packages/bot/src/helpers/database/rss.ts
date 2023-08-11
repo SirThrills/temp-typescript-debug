@@ -11,9 +11,9 @@ export const getGuildRssFeeds = async (guildId: string) => {
     return rows as GuildRssFeedItem[]
 }
 
-export const getGuildRssFeed = async (feedId: number) => {
+export const getGuildRssFeed = async (guildId: string, feedId: number) => {
     const client = (await mysqlClient()).getConn()
-    const [rows, _fields] = await client.query<any[]>('SELECT * FROM `guild_forum_rss_urls` WHERE `id` = ?', [feedId])
+    const [rows, _fields] = await client.query<any[]>('SELECT * FROM `guild_forum_rss_urls` WHERE `id` = ? AND `guild_id` = ?', [feedId, guildId])
     await client.end()
     if (rows == null || rows.length !== 1) {
         return

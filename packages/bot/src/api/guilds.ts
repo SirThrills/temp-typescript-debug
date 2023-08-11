@@ -3,7 +3,7 @@ import { Router } from "express";
 import { getGuildRolesByPermission, getPermissionsForGuild, getPermissionsForGuildRole } from "../helpers/database/permissions";
 import { Permission } from "../types";
 import { authMiddleware } from "./middleware";
-import { getGuildRssFeeds } from "../helpers/database/rss";
+import { getGuildRssFeed, getGuildRssFeeds } from "../helpers/database/rss";
 
 export const guildsRouterHandler = (client: Client) => {
     const guildsRouter = Router()
@@ -156,7 +156,50 @@ export const guildsRouterHandler = (client: Client) => {
             return res.sendStatus(204)
         }
 
-        res.send(guildRssFeeds)
+        const mappedFeeds = guildRssFeeds.map((feed) => {
+            return {
+                ...feed,
+                guild_name: guild.name,
+                ...guild.channels.cache.size > 0 && {
+                    channel_name: guild.channels.cache.find(channel => channel.id === feed.channel_id)?.name
+                },
+                ...guild.roles.cache.size > 0 && feed.ping_role_id && {
+                    role_name: guild.roles.cache.find(role => role.id === feed.ping_role_id)?.name
+                }
+            }
+        })
+
+        res.send(mappedFeeds)
+    })
+
+    guildsRouter.get('/:guildId/rss/feed/:feedId', authMiddleware(client), async (req, res) => {
+        const guild = client.guilds.cache.find((guild) => guild.id === req.params.guildId)
+        if (guild == null) {
+            return res.status(400).send({ error: 'invalid_guild' })
+        }
+
+        if (req.params.feedId == null || isNaN(parseInt(req.params.feedId))) {
+            return res.status(400).send({ error: 'invalid_feed' })
+        }
+
+        const feed = await getGuildRssFeed(guild.id, parseInt(req.params.feedId))
+        if (feed == null) {
+            return res.sendStatus(404)
+        }
+
+        const mappedFeed = {
+            ...feed,
+            guild_name: guild.name,
+            ...guild.channels.cache.size > 0 && {
+                channel_name: guild.channels.cache.find(channel => channel.id === feed.channel_id)?.name
+            },
+            ...guild.roles.cache.size > 0 && feed.ping_role_id && {
+                role_name: guild.roles.cache.find(role => role.id === feed.ping_role_id)?.name
+            }
+
+        }
+
+        res.send(mappedFeed)
     })
 
     guildsRouter.get('/:guildId/channels', authMiddleware(client), async (req, res) => {

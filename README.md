@@ -6,11 +6,11 @@ User Administration, RSS Feeds, Web UI (Seperate Repo)
 
 Create a .env at the root
 
-Get discord token from Discord Developer Portal and set `BOT_TOKEN`  in the .env file.
+Get discord token from Discord Developer Portal and set `BOT_TOKEN` in the .env file.
 
-Copy packages/ui/src/config.ini.default to packages/ui/src/config.ini and configure environment details
+Configure API `API_REDIRECT_URL`, `APP_SECRET` with the OAuth details from your discord developer portal
 
-Start non-essential services with docker compose `docker compose up mariadb nginx php -d`
+Start non-essential services with docker compose `docker compose up mariadb nginx -d`
 
 Import the sql from `sql/tables.sql` into a new database on the mariadb container
 

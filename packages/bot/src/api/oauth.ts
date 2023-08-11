@@ -9,7 +9,8 @@ import { addWebSession, deleteWebSession, getWebSession } from '../helpers/datab
 dotenv.config()
 
 export const oauthRouterMiddleware = (client: Client) => {
-    const clientId = process.env.BOT_CLIENT_ID || ''
+    // Assert not null: API only started after bot.ready
+    const clientId = client.user!.id
     const apiScopes = process.env.API_CLIENT_SCOPES || ''
     const apiRedirectUri = process.env.API_REDIRECT_URI || ''
     const apiSecret = process.env.API_SECRET || ''

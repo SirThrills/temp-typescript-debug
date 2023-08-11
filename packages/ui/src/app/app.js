@@ -204,6 +204,10 @@ const getGuildRssFeeds = async (guildId) => {
     return apiGet(`/guilds/${guildId}/rss/feeds`)
 }
 
+const getGuildFeed = async (guildId, feedId) => {
+    return apiGet(`/guilds/${guildId}/rss/feed/${feedId}`)
+}
+
 const configureTooltips = () => {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     tooltipTriggerList.forEach(ttElm => {
@@ -248,8 +252,13 @@ const setActiveTab = (state, tab) => {
 }
 
 const setActiveRole = (state, role) => {
-    state.rolesContext = state.roles ?? []
+    state.rolesContext = state.rolesContext ?? []
     state.rolesContext.editRoleId = role
+}
+
+const setActiveFeed = (state, feed) => {
+    state.rssContext = state.rssContext ?? []
+    state.rssContext.feed = feed
 }
 
 const setLoading = (loading) => {
@@ -459,6 +468,40 @@ $(function () {
         })
     })
 
+    $('#rss-tab').click(async function (e) {
+        if (state.serverId == null) {
+            return
+        }
+
+        const rssFeeds = await getGuildRssFeeds(state.serverId)
+        if (rssFeeds.data == null) {
+            return
+        }
+
+        const rssFeedsTable = $('#rss-feeds-table')
+        if (rssFeedsTable == null) {
+            return
+        }
+
+        rssFeedsTable.empty()
+        rssFeeds.data.forEach((rssFeed) => {
+            rssFeedsTable.append(
+                `<tr>
+                    <td>${rssFeed.enabled === 1 ? '<i class="fas fa-square-check"></i>' : '<i class="fas fa-square-xmark">'}
+                    <td>${rssFeed.name}</td>
+                    <td>#${rssFeed.channel_name ?? rssFeed.channel_id}</td>
+                    <td>${rssFeed.role_name ? '@' : ''}${rssFeed.role_name ?? rssFeed.ping_role_id ?? 'N/A'}</td>
+                    <td><a href="${rssFeed.rss_url}" target="_blank">${rssFeed.rss_url}</td>
+                    <td><button class="btn btn-outline-primary" 
+                        data-type="edit-rss" data-feed-id="${rssFeed.id}" 
+                        data-bs-toggle="modal" data-bs-target="#edit-rss-modal"
+                        ><i class="fas fa-edit"></i>
+                    </button></td>
+                </tr>`
+            )
+        })
+    })
+
     $('#tablist').on('show.bs.tab', function (event) {
         const newTab = event.target.id
         const oldTab = event.relatedTarget.id
@@ -479,6 +522,21 @@ $(function () {
             return
         }
         setActiveRole(state, roleId)
+    })
+
+    $(document).on('click', 'button[data-type="edit-rss"]', async function () {
+        const children = $('#edit-rss-form').find(':input, select')
+        children.prop('disabled', true)
+        const feedId = $(this).data('feed-id')
+        if (isNaN(parseInt(feedId))) {
+            return
+        }
+        const feed = await getGuildFeed(state.serverId, feedId)
+        if (feed == null) {
+            return
+        }
+        setActiveFeed(state, feed)
+        children.prop('disabled', false)
     })
 
     $('#edit-role-save', async function () {
