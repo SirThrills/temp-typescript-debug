@@ -14,7 +14,7 @@ node_modules
 docker-compose.yaml
 
 packages/*
-!packages/bot
+!packages/ui
 
 yarn-error.log
 .git

@@ -16,31 +16,16 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.bot
-    environment:
-      BOT_TOKEN: ${BOT_TOKEN}
-      DB_HOST: mariadb
-      DB_USER: user
-      DB_PASS: password
-      DB_NAME: database
-      NODE_ENV: local
+    env_file: .env
     ports: 
-      - "8081:8081"
+      - "8080:8080"
   nginx:
     image: nginx:latest
     ports:
-      - '8080:80'
+      - '80:80'
     volumes: 
       - ./packages/ui/src:/var/www/html
       - ./packages/ui/default.conf:/etc/nginx/conf.d/default.conf
-    links:
-      - php
-  php:
-    image: php-with-ext
-    build: 
-      dockerfile: Dockerfile.ui
-      context: .
-    volumes:
-      - ./packages/ui/src:/var/www/html
 
 volumes:
   data:

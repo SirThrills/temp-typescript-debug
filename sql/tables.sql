@@ -93,11 +93,16 @@ CREATE TABLE IF NOT EXISTS `guild_warnings` (
 
 CREATE TABLE IF NOT EXISTS `web_sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `auth_token` varchar(250) NOT NULL,
+  `discord_access_token` varchar(250) NOT NULL,
+  `jwt_access_token` varchar(250) NOT NULL,
+  `jwt_secret` varchar(250) NOT NULL,
   `user_id` varchar(50) NOT NULL,
   `expires_in` int(11) NOT NULL,
+  `last_used` datetime DEFAULT NULL,
   `added` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `discord_access_token` (`discord_access_token`),
+  UNIQUE KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;

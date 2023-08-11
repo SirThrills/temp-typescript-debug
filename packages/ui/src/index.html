@@ -1,0 +1,210 @@
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <title>Discord Management UI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="app/app.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <main class="d-flex flex-nowrap">
+        <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary d-none" id="server-sidebar">
+            <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+                <a href="#" class="d-block mt-1 px-1 pt-1 link-body-emphasis text-decoration-none"
+                    data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Bigpoint Discord Management">
+                    <img class="bi pe-none rounded-circle" style="width:48px;height:48px;" role="img"
+                        aria-label="Bigpoint Logo" src="assets/bigpoint.png" />
+                </a>
+                <hr>
+                <div id="server-list">
+
+                </div>
+            </ul>
+            <div class="dropdown border-top" id="user-block">
+                <a href="#"
+                    class="d-flex align-items-center justify-content-center p-3 link-body-emphasis text-decoration-none dropdown-toggle"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <img alt="avatar" width="24" height="24" class="rounded-circle" id="user-icon">
+                </a>
+                <ul class="dropdown-menu text-small shadow">
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <span id="user-name"></span>
+                        </a>
+                    <li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" id="user-signout">Sign out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="d-flex w-100 justify-content-center align-items-center" id="app-loading">
+            <div class="d-flex w-100 flex-column text-white justify-content-center align-items-center">
+                <div class="p-2">
+                    <i class="fas fa-sync fa-spin fa-4x"></i>
+                </div>
+                <div class="p-2">
+                    <span>Loading Manager...</span>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex w-100 d-none" id="server-management">
+            <div class="d-none d-flex w-100 flex-column text-white justify-content-center align-items-center"
+                id="loading">
+                <div class="p-2">
+                    <i class="fas fa-sync fa-spin fa-4x"></i>
+                </div>
+                <div class="p-2">
+                    <span>Fetching server info</span>
+                </div>
+            </div>
+            <div class="d-flex w-100 mt-5 justify-content-center align-items-centers" id="management">
+                <div class="justify-content-center align-items-center w-75">
+                    <div class="outline">
+                        <nav>
+                            <ul class="nav nav-tabs nav-fill mb-3" role="tablist" id="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="info-tab" data-bs-toggle="tab"
+                                        data-bs-target="#info-tab-pane" type="button" role="tab"
+                                        aria-controls="info-tab-pane" aria-selected="true">Info</button>
+                                </li>
+                                <li class="nav-item" role="presentation" id="role-configuration-nav-item">
+                                    <button class="nav-link" id="roles-tab" data-bs-toggle="tab"
+                                        data-bs-target="#roles-tab-pane" type="button" role="tab"
+                                        aria-controls="roles-tab-pane" aria-selected="true">Role
+                                        Configuration</button>
+                                </li>
+                                <li class="nav-item" role="presentation" id="rss-feed-nav-item">
+                                    <button class="nav-link" id="rss-tab" data-bs-toggle="tab"
+                                        data-bs-target="#rss-tab-pane" type="button" role="tab"
+                                        aria-controls="rss-tab-pane" aria-selected="true">RSS
+                                        Feeds</button>
+                                </li>
+                                <li class="nav-item" role="presentation" id="channel-logging-nav-item">
+                                    <button class="nav-link" id="channel-tab" data-bs-toggle="tab"
+                                        data-bs-target="#channels-tab-pane" type="button" role="tab"
+                                        aria-controls="channels-tab-pane" aria-selected="true">Channel
+                                        Logging</button>
+                                </li>
+                                <li class="nav-item" role="presentation" id="bans-nav-item">
+                                    <button class="nav-link" id="bans-tab" data-bs-toggle="tab"
+                                        data-bs-target="#bans-tab-pane" type="button" role="tab"
+                                        aria-controls="bans-tab-pane" aria-selected="true">Bans</button>
+                                </li>
+                                <li class="nav-item" role="presentation" id="warnings-nav-item">
+                                    <button class="nav-link" id="warnings-tab" data-bs-toggle="tab"
+                                        data-bs-target="#warnings-tab-pane" type="button" role="tab"
+                                        aria-controls="warnings-tab-pane" aria-selected="true">Warnings</button>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="tab-content" id="tab-content">
+                            <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel"
+                                aria-labelledby="info-tab" tabindex="0">
+                                <div class="d-flex flex-row py-2">
+                                    <div class="d-flex align-items-center">
+                                        <img class="server-icon rounded-circle" id="server-icon">
+                                    </div>
+                                    <div class="d-flex align-items-center mx-2">
+                                        <span id="server-name"></span>
+                                    </div>
+                                    <div class="d-flex align-items-center mx-2 clickable" id="server-refresh-info">
+                                        <i class="fas fa-sync"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="roles-tab-pane" role="tabpanel" aria-labelledby="roles-tab"
+                                tabindex="0">
+                                <div class="d-flex flex-row py-2">
+                                    <table class="table table-responsive table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Name</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="server-roles-table"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="rss-tab-pane" role="tabpanel" aria-labelledby="rss-tab"
+                                tabindex="0">
+                                RSS</div>
+                            <div class="tab-pane fade" id="channels-tab-pane" role="tabpanel"
+                                aria-labelledby="channels-tab" tabindex="0">
+                                Channels</div>
+                            <div class="tab-pane fade" id="bans-tab-pane" role="tabpanel" aria-labelledby="bans-tab"
+                                tabindex="0">
+                                Bans</div>
+                            <div class="tab-pane fade" id="warnings-tab-pane" role="tabpanel"
+                                aria-labelledby="warnings-tab" tabindex="0">
+                                Warnings</div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal" id="edit-role-modal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Editing Role <span id="edit-role-name"></span></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="edit-role-form">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                            id="edit-role-view-server-permission">
+                                        <label class="form-check-label" for="edit-role-view-server-permission">
+                                            View Server
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                            id="edit-role-view-roles-permission">
+                                        <label class="form-check-label" for="edit-role-view-roles-permission">
+                                            View Role Configuration
+                                        </label>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" id="edit-role-id" />
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="edit-role-save">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+    integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"
+    integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+    integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js"
+    integrity="sha512-nlp9/l96/EpjYBx7EP7pGASVXNe80hGhYAUrjeXnu/fyF5Py0/RXav4BBNs7n5Hx1WFhOEOWSAVjGeC3oKxDVQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="app/app.js"></script>
+
+</html>

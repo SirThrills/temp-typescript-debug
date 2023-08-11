@@ -7,7 +7,7 @@
         "packages/*"
     ],
     "packageManager": "yarn@3.6.1",
-    "devDependencies": {
-        "@fortawesome/fontawesome-free": "^6.4.2"
+    "dependencies": {
+        "@types/uuid": "^9.0.2"
     }
 }

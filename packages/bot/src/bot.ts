@@ -7,7 +7,7 @@ import { addGuild, removeGuild, updateActiveGuilds, updateGuild } from './helper
 import { getBanAuditLogAuthor } from './helpers/auditlog'
 import { CronJob } from 'cron'
 import { processGuildRssFeeds, processGuildRssQueues, processGuildsUpdates } from './helpers/cron'
-import { expressApiApp } from './api'
+import { expressApiApp } from './api/api'
 
 dotenv.config()
 
@@ -79,10 +79,13 @@ client.on('guildDelete', async (guild) => {
 })
 
 const createCronJobs = (client: Client) => {
+    console.log('loading cron jobs...')
     new CronJob({ cronTime: '* * * * *', onTick: async function () { await processGuildsUpdates(client) }, start: true })
     new CronJob({ cronTime: '* * * * *', onTick: async function () { await processGuildRssFeeds(client) }, start: true })
     new CronJob({ cronTime: '* * * * *', onTick: async function () { await processGuildRssQueues(client) }, start: true })
 }
 
+console.log('bot starting...')
 createCronJobs(client)
+console.log('connecting to discord')
 client.login(process.env.BOT_TOKEN)
