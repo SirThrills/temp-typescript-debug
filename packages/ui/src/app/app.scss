@@ -141,3 +141,11 @@ main {
     background-color: black;
     border-radius: 75%;
 }
+
+.mentionable-item {
+    border-radius: 3px;
+    padding: 0 2px;
+    font-weight: 500;
+    color: rgb(52, 152, 219);
+    background-color: rgba(52, 152, 219, 0.1);
+}

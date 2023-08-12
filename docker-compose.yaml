@@ -32,7 +32,7 @@ services:
       context: .
       dockerfile: Dockerfile.ui.dev
     volumes:
-      - ./packages/ui/src:/opt/app/packages/ui/src
+      - .:/opt/app/
 
 volumes:
   data:

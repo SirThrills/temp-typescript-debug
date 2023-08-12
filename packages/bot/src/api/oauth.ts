@@ -4,7 +4,7 @@ import { Client } from 'discord.js'
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import { v4 } from 'uuid'
-import { addWebSession, deleteWebSession, getWebSession } from '../helpers/database/api'
+import { addWebSession, deleteWebSession, deleteWebSessionByDiscordAccessToken, getWebSession, getWebSessionByDiscordAccessToken } from '../helpers/database/api'
 
 dotenv.config()
 
@@ -47,8 +47,8 @@ export const oauthRouterMiddleware = (client: Client) => {
                 return res.sendStatus(400)
             }
 
-            if (await getWebSession(tokenRes.data.access_token)) {
-                await deleteWebSession(tokenRes.data.access_token)
+            if (await getWebSessionByDiscordAccessToken(tokenRes.data.access_token)) {
+                await deleteWebSessionByDiscordAccessToken(tokenRes.data.access_token)
             }
 
             const userInfo = await axios.get('https://discord.com/api/users/@me', {
@@ -69,8 +69,11 @@ export const oauthRouterMiddleware = (client: Client) => {
             return res.send({
                 access_token: token,
             })
-        } catch (err) {
+        } catch (err: any) {
             console.log(err)
+            if (err.response.status && typeof err.response.status === 'number') {
+                return res.sendStatus(err.response.status)
+            }
         }
 
         return res.sendStatus(500)

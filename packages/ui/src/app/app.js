@@ -1,5 +1,6 @@
 import axios from 'axios'
 import $ from 'jquery'
+import Cookies from 'js-cookie'
 
 const parseJwt = (token) => {
     if (typeof token !== 'string') {
@@ -79,10 +80,9 @@ const showServerManagement = (show = true) => {
     $('#server-management').toggleClass('d-none', !show)
 }
 
-const setServerInfo = (serverInfo) => {
-    document.getElementById('server-name').innerText = serverInfo.guild_name
-    const imgUrl = data.guild_icon ?? `https://ui-avatars.com/api/?name=${serverInfo.guild_name}`
-    document.getElementById('server-icon').src = imgUrl
+const showError = (error) => {
+    $('#error-toast-msg').text(error)
+    $('#error-toast').show()
 }
 
 const getParams = () => {
@@ -133,7 +133,7 @@ const getOauthUrl = async () => {
 
 const getToken = async (code) => {
     const tokenRes = await apiPost('/oauth/exchange', { code })
-    if (tokenRes.data == null) {
+    if (tokenRes == null || tokenRes.status !== 200) {
         return
     }
     return tokenRes.data
@@ -155,12 +155,11 @@ const configureUser = async () => {
 
         window.history.pushState({}, 'Discord Management UI', window.location.origin);
 
-        console.log('token', token)
-
         if (
             token == null ||
             token.access_token == null
         ) {
+            showError('Error retrieving access token')
             return
         }
 
@@ -223,6 +222,11 @@ const configureTooltips = () => {
             tooltip.hide()
         })
     })
+}
+
+const configureToasts = () => {
+    const toastElList = document.querySelectorAll('.toast')
+    const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl, option))
 }
 
 const updateHtmlElements = async (state, newParentElm, newChildElm) => {
@@ -447,7 +451,7 @@ $(function () {
         toggleActive(parentElm, childElm, false)
     })
 
-    $('#roles-tab').click(async function (e) {
+    $('#roles-tab').on('click', async function (e) {
         if (state.serverId == null) {
             return
         }
@@ -478,7 +482,7 @@ $(function () {
         })
     })
 
-    $('#rss-tab').click(async function (e) {
+    $('#rss-tab').on('click', async function (e) {
         if (state.serverId == null) {
             return
         }
@@ -497,11 +501,11 @@ $(function () {
         rssFeeds.data.forEach((rssFeed) => {
             rssFeedsTable.append(
                 `<tr>
-                    <td>${rssFeed.enabled === 1 ? '<i class="fas fa-square-check"></i>' : '<i class="fas fa-square-xmark">'}
+                    <td>${rssFeed.enabled === 1 ? '<i class="fas fa-square-check text-success-emphasis"></i>' : '<i class="fas fa-square-xmark text-danger-emphasis">'}
                     <td>${rssFeed.name}</td>
-                    <td>#${rssFeed.channel_name ?? rssFeed.channel_id}</td>
-                    <td>${rssFeed.role_name ? '@' : ''}${rssFeed.role_name ?? rssFeed.ping_role_id ?? 'N/A'}</td>
-                    <td><a href="${rssFeed.rss_url}" target="_blank">${rssFeed.rss_url}</td>
+                    <td><span class="mentionable-item">#${rssFeed.channel_name ?? rssFeed.channel_id}</span></td>
+                    <td>${rssFeed.role_name || rssFeed.ping_role_id ? `<span class="mentionable-item">@${rssFeed.role_name ?? rssFeed.ping_role_id}</span>` : 'N/A'}</td>
+                    <td><a href="${rssFeed.rss_url}" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> ${rssFeed.rss_url}</td>
                     <td><button class="btn btn-outline-primary" 
                         data-type="edit-rss" data-feed-id="${rssFeed.id}" 
                         data-bs-toggle="modal" data-bs-target="#edit-rss-modal"
