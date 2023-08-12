@@ -2,10 +2,15 @@
     "name": "ui",
     "packageManager": "yarn@3.6.1",
     "scripts": {
-        "watch-sass": "yarn sass --watch app.scss src/app/app.min.css --style compressed --no-source-map --poll"
+        "watch-sass": "yarn sass --watch app.scss src/app/app.min.css --style compressed --no-source-map --poll",
+        "watch": "node watcher.js"
     },
     "devDependencies": {
         "bootstrap": "5.3.1",
         "sass": "^1.64.2"
+    },
+    "dependencies": {
+        "chokidar": "^3.5.3",
+        "terser": "^5.19.2"
     }
 }

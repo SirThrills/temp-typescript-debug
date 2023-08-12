@@ -97,7 +97,7 @@ export const guildsRouterHandler = (client: Client) => {
         }
     })
 
-    guildsRouter.get('/:guildId/roles', authMiddleware(client), async (req, res) => {
+    guildsRouter.get('/:guildId/roles/permissions', authMiddleware(client), async (req, res) => {
         if (res.locals.user == null) {
             return res.sendStatus(403)
         }
@@ -223,6 +223,29 @@ export const guildsRouterHandler = (client: Client) => {
         }
 
         res.send(guildChannels)
+    })
+
+    guildsRouter.get('/:guildId/roles', authMiddleware(client), async (req, res) => {
+        if (res.locals.user == null) {
+            return res.sendStatus(403)
+        }
+
+        const guild = client.guilds.cache.find((guild) => guild.id === req.params.guildId)
+        if (guild == null) {
+            return res.sendStatus(400)
+        }
+
+        const guildRoles = guild.roles.cache.map((role) => {
+            return {
+                id: role.id,
+                name: role.name
+            }
+        })
+        if (guildRoles.length === 0) {
+            return res.sendStatus(204)
+        }
+
+        res.send(guildRoles)
     })
 
     return guildsRouter

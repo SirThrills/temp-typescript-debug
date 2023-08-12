@@ -208,6 +208,10 @@ const getGuildFeed = async (guildId, feedId) => {
     return apiGet(`/guilds/${guildId}/rss/feed/${feedId}`)
 }
 
+const getGuildChannels = async (guildId) => {
+    return apiGet(`/guilds/${guildId}/channels`)
+}
+
 const configureTooltips = () => {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     tooltipTriggerList.forEach(ttElm => {
@@ -258,7 +262,11 @@ const setActiveRole = (state, role) => {
 
 const setActiveFeed = (state, feed) => {
     state.rssContext = state.rssContext ?? []
-    state.rssContext.feed = feed
+    if (feed == null) {
+        state.rssContext.feed = null
+        return
+    }
+    state.rssContext.feed = feed.data
 }
 
 const setLoading = (loading) => {
@@ -323,7 +331,6 @@ const resetRoles = (state) => {
 }
 
 const resetRssFeed = () => {
-
 }
 
 const resetChannels = () => {
@@ -531,12 +538,25 @@ $(function () {
         if (isNaN(parseInt(feedId))) {
             return
         }
-        const feed = await getGuildFeed(state.serverId, feedId)
-        if (feed == null) {
+        const [feed, channels, roles] = await Promise.all([
+            getGuildFeed(state.serverId, feedId),
+            getGuildChannels(state.serverId),
+            getGuildRoles(state.serverId)
+        ])
+        if (feed == null || channels == null || roles == null) {
             return
         }
         setActiveFeed(state, feed)
+        $('#edit-rss-feed-enabled').prop('checked', feed.data.enabled === 1)
+        $('#edit-rss-name').val(feed.data.name)
+        //$('#edit-rss-url').val(feed.data.rss_url)
         children.prop('disabled', false)
+    })
+
+    $('#edit-rss-modal').on('hidden.bs.modal', function () {
+        setActiveFeed(state, null)
+        $('#edit-rss-form').get(0).reset()
+
     })
 
     $('#edit-role-save', async function () {
