@@ -132,6 +132,11 @@ main {
     cursor: pointer;
 }
 
+#server-list {
+    overflow-y: auto;
+    max-height: 80%;
+}
+
 #server-list .selected {
     background-color: black;
     border-radius: 75%;

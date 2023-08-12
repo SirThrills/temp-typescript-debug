@@ -6,8 +6,5 @@
     "workspaces": [
         "packages/*"
     ],
-    "packageManager": "yarn@3.6.1",
-    "dependencies": {
-        "@types/uuid": "^9.0.2"
-    }
+    "packageManager": "yarn@3.6.1"
 }

@@ -1,16 +1,21 @@
 {
     "name": "ui",
     "packageManager": "yarn@3.6.1",
+    "type": "module",
     "scripts": {
         "watch-sass": "yarn sass --watch app.scss src/app/app.min.css --style compressed --no-source-map --poll",
         "watch": "node watcher.js"
     },
     "devDependencies": {
+        "@types/jquery": "^3.5.16",
         "bootstrap": "5.3.1",
-        "sass": "^1.64.2"
+        "chokidar": "^3.5.3",
+        "esbuild": "^0.19.1",
+        "sass": "^1.64.2",
+        "terser": "^5.19.2"
     },
     "dependencies": {
-        "chokidar": "^3.5.3",
-        "terser": "^5.19.2"
+        "axios": "^1.4.0",
+        "jquery": "^3.7.0"
     }
 }

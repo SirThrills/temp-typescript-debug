@@ -10,7 +10,7 @@ Get discord token from Discord Developer Portal and set `BOT_TOKEN` in the .env 
 
 Configure API `API_REDIRECT_URL`, `APP_SECRET` with the OAuth details from your discord developer portal
 
-Start non-essential services with docker compose `docker compose up mariadb nginx -d`
+Start pre-req services with docker compose `docker compose up mariadb nginx ui -d`
 
 Import the sql from `sql/tables.sql` into a new database on the mariadb container
 

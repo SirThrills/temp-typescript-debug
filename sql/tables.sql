@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS `guilds` (
   `guild_id` varchar(50) NOT NULL,
   `guild_name` varchar(255) NOT NULL,
   `guild_icon` varchar(2000) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `guild_id` (`guild_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS `guild_bans` (
@@ -54,6 +55,8 @@ CREATE TABLE IF NOT EXISTS `guild_forum_rss_post_queue` (
 
 CREATE TABLE IF NOT EXISTS `guild_forum_rss_urls` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `enabled` int(11) NOT NULL DEFAULT 1,
+  `name` varchar(50) NOT NULL DEFAULT '0',
   `guild_id` varchar(50) NOT NULL,
   `channel_id` varchar(50) NOT NULL,
   `ping_role_id` varchar(50) DEFAULT NULL,

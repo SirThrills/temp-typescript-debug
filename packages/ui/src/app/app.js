@@ -1,3 +1,6 @@
+import axios from 'axios'
+import $ from 'jquery'
+
 const parseJwt = (token) => {
     if (typeof token !== 'string') {
         return
