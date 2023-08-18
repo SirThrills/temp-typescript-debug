@@ -511,6 +511,11 @@ $(function () {
                         data-bs-toggle="modal" data-bs-target="#edit-rss-modal"
                         ><i class="fas fa-edit"></i>
                     </button></td>
+                    <td><button class="btn btn-outline-danger" 
+                        data-type="delete-rss" data-feed-id="${rssFeed.id}" 
+                        data-bs-toggle="modal" data-bs-target="#delete-rss-modal"
+                        ><i class="fas fa-times"></i>
+                    </button></td>
                 </tr>`
             )
         })

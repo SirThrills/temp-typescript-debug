@@ -41,6 +41,7 @@ export type GuildItem = {
 }
 
 export type GuildRssFeedItem = {
+    enabled: boolean
     id: number
     guild_id: string
     channel_id: string

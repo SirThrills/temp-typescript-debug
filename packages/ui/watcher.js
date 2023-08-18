@@ -1,6 +1,5 @@
 import { watch } from 'chokidar'
-import { minify } from 'terser'
-import { readFile, writeFile } from 'fs/promises'
+import { writeFile } from 'fs/promises'
 import { compileAsync } from 'sass'
 import { build } from 'esbuild'
 
@@ -12,7 +11,6 @@ const watcher = watch(pathToWatch, {
 })
 
 watcher.on('change', async (path) => {
-    const file = await readFile(path, 'utf-8')
     const name = path.substring(path.lastIndexOf('/') + 1, path.indexOf('.'))
     try {
         if (path.endsWith('.js')) {
@@ -23,11 +21,6 @@ watcher.on('change', async (path) => {
                 minify: true,
                 outfile: `src/web/app/${name}.bundle.min.js`
             })
-        } else if (path.endsWith('bundle.js')) {
-            console.log(`Minifying ${path}`)
-            const terserMinified = await minify(file, { sourceMap: false })
-            console.log(`Writing ${name}.min.js from ${path}`)
-            await writeFile(`src/web/app/${name}.min.js`, terserMinified.code, { encoding: 'utf-8' })
         } else if (path.endsWith('.scss')) {
             console.log(`Minifying ${path}`)
             const result = await compileAsync(path, { style: 'compressed', sourceMap: false })

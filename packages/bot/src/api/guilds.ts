@@ -1,18 +1,15 @@
-import { ChannelType, Client } from "discord.js";
+import { ChannelType, Client, Guild } from "discord.js";
 import { Router } from "express";
 import { getGuildRolesByPermission, getPermissionsForGuild, getPermissionsForGuildRole } from "../helpers/database/permissions";
 import { Permission } from "../types";
 import { authMiddleware } from "./middleware";
 import { getGuildRssFeed, getGuildRssFeeds } from "../helpers/database/rss";
+import { userHasPermission } from "../helpers/permission";
 
 export const guildsRouterHandler = (client: Client) => {
     const guildsRouter = Router()
 
     guildsRouter.get('/:guildId', authMiddleware(client), async (req, res) => {
-        if (res.locals.user == null) {
-            return res.sendStatus(403)
-        }
-
         if (req.params.guildId == null || typeof req.params.guildId !== 'string') {
             return res.sendStatus(400)
         }
@@ -20,6 +17,10 @@ export const guildsRouterHandler = (client: Client) => {
         const guild = client.guilds.cache.find((guild) => guild.id === req.params.guildId)
         if (guild == null) {
             return res.sendStatus(400)
+        }
+
+        if (!await userHasPermission(client, guild, res.locals.user, Permission.VIEW_SERVER)) {
+            return res.sendStatus(403)
         }
 
         const member = guild.members.cache.find((member) => member.id === res.locals.user.id)
@@ -36,15 +37,16 @@ export const guildsRouterHandler = (client: Client) => {
     })
 
     guildsRouter.get('/:guildId/permissions', authMiddleware(client), async (req, res) => {
-        if (res.locals.user == null) {
+        const guild = client.guilds.cache.find((guild) => guild.id === req.params.guildId)
+        if (guild == null) {
+            return res.sendStatus(400)
+        }
+
+        if (!await userHasPermission(client, guild, res.locals.user, Permission.VIEW_SERVER)) {
             return res.sendStatus(403)
         }
 
         try {
-            const guild = client.guilds.cache.find((guild) => guild.id === req.params.guildId)
-            if (guild == null) {
-                return res.sendStatus(400)
-            }
 
             const member = guild.members.cache.find((member) => member.id === res.locals.user.id)
             if (member == null) {
@@ -98,33 +100,18 @@ export const guildsRouterHandler = (client: Client) => {
     })
 
     guildsRouter.get('/:guildId/roles/permissions', authMiddleware(client), async (req, res) => {
-        if (res.locals.user == null) {
-            return res.sendStatus(403)
-        }
-
         const guild = client.guilds.cache.find((guild) => guild.id === req.params.guildId)
         if (guild == null) {
             return res.sendStatus(400)
         }
 
-        const guildViewRolesPermissionRoles = await getGuildRolesByPermission(guild.id, Permission.VIEW_ROLES)
-        if (guildViewRolesPermissionRoles == null && guild.ownerId !== res.locals.user.id) {
+        if (!await userHasPermission(client, guild, res.locals.user, Permission.VIEW_ROLES)) {
             return res.sendStatus(403)
         }
 
         const member = guild.members.cache.find((member) => member.id === res.locals.user.id)
         if (member == null) {
             return res.sendStatus(403)
-        }
-
-        if (guild.ownerId !== res.locals.user.id) {
-            if (!member.roles.cache.find((role) => {
-                return guildViewRolesPermissionRoles?.find((guildRole) => {
-                    return role.id === guildRole.role_id
-                })
-            })) {
-                return res.sendStatus(403)
-            }
         }
 
         const mappedRoles = await Promise.all(guild.roles.cache.map(async (role) => {
@@ -142,13 +129,13 @@ export const guildsRouterHandler = (client: Client) => {
     })
 
     guildsRouter.get('/:guildId/rss/feeds', authMiddleware(client), async (req, res) => {
-        if (res.locals.user == null) {
-            return res.sendStatus(403)
-        }
-
         const guild = client.guilds.cache.find((guild) => guild.id === req.params.guildId)
         if (guild == null) {
             return res.sendStatus(400)
+        }
+
+        if (!await userHasPermission(client, guild, res.locals.user, Permission.VIEW_RSS)) {
+            return res.sendStatus(403)
         }
 
         const guildRssFeeds = await getGuildRssFeeds(guild.id)
@@ -178,6 +165,10 @@ export const guildsRouterHandler = (client: Client) => {
             return res.status(400).send({ error: 'invalid_guild' })
         }
 
+        if (!await userHasPermission(client, guild, res.locals.user, Permission.VIEW_RSS)) {
+            return res.sendStatus(403)
+        }
+
         if (req.params.feedId == null || isNaN(parseInt(req.params.feedId))) {
             return res.status(400).send({ error: 'invalid_feed' })
         }
@@ -203,13 +194,13 @@ export const guildsRouterHandler = (client: Client) => {
     })
 
     guildsRouter.get('/:guildId/channels', authMiddleware(client), async (req, res) => {
-        if (res.locals.user == null) {
-            return res.sendStatus(403)
-        }
-
         const guild = client.guilds.cache.find((guild) => guild.id === req.params.guildId)
         if (guild == null) {
             return res.sendStatus(400)
+        }
+
+        if (!await userHasPermission(client, guild, res.locals.user, Permission.VIEW_CHANNELS)) {
+            return res.sendStatus(403)
         }
 
         const guildChannels = guild.channels.cache.filter(channel => channel.type === ChannelType.GuildText).map((channel) => {
@@ -226,13 +217,13 @@ export const guildsRouterHandler = (client: Client) => {
     })
 
     guildsRouter.get('/:guildId/roles', authMiddleware(client), async (req, res) => {
-        if (res.locals.user == null) {
-            return res.sendStatus(403)
-        }
-
         const guild = client.guilds.cache.find((guild) => guild.id === req.params.guildId)
         if (guild == null) {
             return res.sendStatus(400)
+        }
+
+        if (!await userHasPermission(client, guild, res.locals.user, Permission.VIEW_ROLES)) {
+            return res.sendStatus(403)
         }
 
         const guildRoles = guild.roles.cache.map((role) => {
@@ -241,6 +232,7 @@ export const guildsRouterHandler = (client: Client) => {
                 name: role.name
             }
         })
+
         if (guildRoles.length === 0) {
             return res.sendStatus(204)
         }

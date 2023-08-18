@@ -68,3 +68,9 @@ export const removeGuildRssPostQueueItem = async (queueId: number) => {
     await client.query<any[]>('DELETE FROM `guild_forum_rss_post_queue` WHERE `id` = ?', [queueId])
     await client.end()
 }
+
+export const removeGuildRssFeed = async (feedId: number) => {
+    const client = (await mysqlClient()).getConn()
+    await client.query<any[]>('DELETE FROM `guild_forum_rss_urls` WHERE `id` = ?', [feedId])
+    await client.end()
+}

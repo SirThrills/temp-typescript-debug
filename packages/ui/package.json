@@ -12,8 +12,7 @@
         "bootstrap": "5.3.1",
         "chokidar": "^3.5.3",
         "esbuild": "^0.19.1",
-        "sass": "^1.64.2",
-        "terser": "^5.19.2"
+        "sass": "^1.64.2"
     },
     "dependencies": {
         "axios": "^1.4.0",

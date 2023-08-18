@@ -1,4 +1,4 @@
-import { Client } from 'discord.js'
+import { Client, User } from 'discord.js'
 import express from 'express'
 import { oauthRouterMiddleware } from './oauth'
 import cors from 'cors'
@@ -6,10 +6,11 @@ import helmet from 'helmet'
 import { guildsRouterHandler } from './guilds'
 import { meRouterHandler } from './me'
 
-declare module 'express-session' {
-    interface SessionData {
-        access_token: string
-        tokenSecret: string
+declare global {
+    namespace Express {
+        interface Locals {
+            user: User
+        }
     }
 }
 

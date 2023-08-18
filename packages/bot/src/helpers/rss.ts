@@ -61,6 +61,9 @@ export const processRssItem = async (item: {
 
 export const processGuildRssFeed = async (guild: Guild, feeds: GuildRssFeedItem[]) => {
     feeds.forEach(async (feed) => {
+        if (!feed.enabled) {
+            return
+        }
         try {
             const promises = Promise.all([getGuildRssFeedLastPost(feed.id), parser.parseURL(feed.rss_url)])
             const [lastPost, rssFeed] = await promises
