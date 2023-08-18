@@ -2671,12 +2671,7 @@ __metadata:
     esbuild: ^0.19.1
     jquery: ^3.7.0
     js-cookie: ^3.0.5
-<<<<<<< HEAD
-    sass: ^1.64.2
-=======
     sass: ^1.65.1
-    terser: ^5.19.2
->>>>>>> d2ff5725c32d89e219f4a132560ab3ce7994e241
   languageName: unknown
   linkType: soft
 
