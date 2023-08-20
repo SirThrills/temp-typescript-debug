@@ -3,20 +3,29 @@
     "packageManager": "yarn@3.6.1",
     "type": "module",
     "scripts": {
-        "watch-sass": "yarn sass --watch app.scss src/app/app.min.css --style compressed --no-source-map --poll",
-        "watch": "node watcher.js"
+        "watch": "node watcher.js",
+        "dev": "parcel -p 4000 src/index.html"
     },
     "devDependencies": {
         "@types/jquery": "^3.5.16",
         "@types/js-cookie": "^3.0.3",
+        "@types/react": "^18.0.26",
+        "@types/react-dom": "^18.0.10",
         "bootstrap": "5.3.1",
         "chokidar": "^3.5.3",
         "esbuild": "^0.19.1",
-        "sass": "^1.65.1"
+        "parcel": "^2.9.3",
+        "sass": "^1.65.1",
+        "typescript": "^5.1.6"
     },
     "dependencies": {
         "axios": "^1.4.0",
+        "jose": "^4.14.4",
         "jquery": "^3.7.0",
-        "js-cookie": "^3.0.5"
+        "js-cookie": "^3.0.5",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^6.6.1",
+        "zustand": "^4.4.1"
     }
 }

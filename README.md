@@ -8,7 +8,7 @@ Create a .env at the root
 
 Get discord token from Discord Developer Portal and set `BOT_TOKEN` in the .env file.
 
-Configure API `API_REDIRECT_URL`, `APP_SECRET` with the OAuth details from your discord developer portal
+Configure API `OAUTH_REDIRECT_URL`, `OAUTH_SECRET`, `OAUTH_CLIENT_ID` with the OAuth details from your discord developer portal
 
 Start pre-req services with docker compose `docker compose up mariadb nginx ui -d`
 

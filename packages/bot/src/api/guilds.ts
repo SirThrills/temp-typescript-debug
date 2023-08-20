@@ -67,17 +67,20 @@ export const guildsRouterHandler = (client: Client) => {
                 permissions.push(permission)
             }
 
-            permissions = await permissions.reduce(async (permissionsResult: Promise<number[]>, permission) => {
-                const permissions = await permissionsResult
-
+            const mappedPermissions = await Promise.all(permissions.map(async (permission) => {
                 if (guild.ownerId === res.locals.user.id) {
-                    permissions.push(permission)
-                    return permissions
+                    return {
+                        permission,
+                        has: true
+                    };
                 }
 
                 const guildRolesWithPermission = await getGuildRolesByPermission(guild.id, permission)
                 if (guildRolesWithPermission == null) {
-                    return permissions
+                    return {
+                        permission,
+                        has: false
+                    }
                 }
 
                 if (!member.roles.cache.find((role) => {
@@ -85,14 +88,41 @@ export const guildsRouterHandler = (client: Client) => {
                         return guildRole.role_id === role.id
                     })
                 })) {
-                    return permissions
+                    return {
+                        permission,
+                        has: false
+                    }
                 }
 
-                permissions.push(permission)
-                return permissions
-            }, Promise.resolve([]))
+                return {
+                    permission,
+                    has: false
+                }
+            }))
 
-            return res.send(permissions)
+            // permissions = await permissions.reduce(async (permissionsResult: Promise<number[]>, permission) => {
+            //     const permissions = await permissionsResult
+
+
+
+            //     const guildRolesWithPermission = await getGuildRolesByPermission(guild.id, permission)
+            //     if (guildRolesWithPermission == null) {
+            //         return permissions
+            //     }
+
+            //     if (!member.roles.cache.find((role) => {
+            //         return guildRolesWithPermission.find((guildRole) => {
+            //             return guildRole.role_id === role.id
+            //         })
+            //     })) {
+            //         return permissions
+            //     }
+
+            //     permissions.push(permission)
+            //     return permissions
+            // }, Promise.resolve([]))
+
+            return res.send(mappedPermissions)
         } catch (err) {
             console.log(err)
             return res.sendStatus(500)

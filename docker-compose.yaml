@@ -19,20 +19,16 @@ services:
     env_file: .env
     ports: 
       - "8080:8080"
-  nginx:
-    image: nginx:latest
-    ports:
-      - '80:80'
-    volumes: 
-      - ./packages/ui/src/web:/var/www/html
-      - ./packages/ui/default.conf:/etc/nginx/conf.d/default.conf
   ui:
     image: bigpoint/discord-ui-dev
     build:
       context: .
       dockerfile: Dockerfile.ui.dev
     volumes:
-      - .:/opt/app/
+      - ./packages/ui/src:/opt/app/packages/ui/src
+    env_file: .env
+    ports:
+      - '4000:4000'
 
 volumes:
   data:

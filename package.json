@@ -6,5 +6,11 @@
     "workspaces": [
         "packages/*"
     ],
-    "packageManager": "yarn@3.6.1"
+    "packageManager": "yarn@3.6.1",
+    "devDependencies": {
+        "process": "^0.11.10"
+    },
+    "dependencies": {
+        "react-bootstrap": "^2.8.0"
+    }
 }

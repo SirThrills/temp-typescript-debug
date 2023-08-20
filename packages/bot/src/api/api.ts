@@ -18,7 +18,7 @@ export const expressApiApp = (client: Client) => {
     const app = express()
 
     app.use(cors({
-        origin: 'http://localhost',
+        origin: 'http://localhost:4000',
         credentials: true,
     }))
     app.use(helmet())

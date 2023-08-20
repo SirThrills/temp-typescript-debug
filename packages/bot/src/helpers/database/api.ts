@@ -10,6 +10,22 @@ type WebSession = {
     added: Date
 }
 
+export const getWebSessionByDiscordUserId = async (userId: string): Promise<WebSession | undefined> => {
+    const client = (await mysqlClient()).getConn()
+    const [rows, _fields] = await client.query<any[]>('SELECT * FROM `web_sessions` WHERE `user_id` = ?', [userId])
+    await client.end()
+    if (rows == null || rows.length !== 1) {
+        return
+    }
+    return rows[0]
+}
+
+export const deleteWebSessionByDiscordUserId = async (userId: string) => {
+    const client = (await mysqlClient()).getConn()
+    await client.query<any[]>('DELETE FROM `web_sessions` WHERE `user_id` = ?', [userId])
+    await client.end()
+}
+
 export const getWebSessionByDiscordAccessToken = async (discordAccessToken: string): Promise<WebSession | undefined> => {
     const client = (await mysqlClient()).getConn()
     const [rows, _fields] = await client.query<any[]>('SELECT * FROM `web_sessions` WHERE `discord_access_token` = ?', [discordAccessToken])

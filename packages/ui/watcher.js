@@ -19,13 +19,13 @@ watcher.on('change', async (path) => {
                 entryPoints: [path],
                 bundle: true,
                 minify: true,
-                outfile: `src/web/app/${name}.bundle.min.js`
+                outfile: `src/web/app-old/${name}.bundle.min.js`
             })
         } else if (path.endsWith('.scss')) {
             console.log(`Minifying ${path}`)
             const result = await compileAsync(path, { style: 'compressed', sourceMap: false })
             console.log(`Writing ${name}.min.css from ${path}`)
-            await writeFile(`src/web/app/${name}.min.css`, result.css, { encoding: 'utf-8' })
+            await writeFile(`src/web/app-old/${name}.min.css`, result.css, { encoding: 'utf-8' })
         }
     } catch (err) {
         console.log('Failed parsing', path)

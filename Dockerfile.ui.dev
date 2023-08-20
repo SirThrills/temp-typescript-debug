@@ -6,4 +6,4 @@ RUN yarn install
 
 WORKDIR /opt/app/packages/ui
 
-CMD ["yarn", "watch"]
+CMD ["yarn", "dev"]
