@@ -14,13 +14,24 @@ declare global {
     }
 }
 
+var whitelist = [
+    'http://localhost:4000',
+    'https://dev-test.bigpoint-discord.net/',
+]
+var corsOptions = {
+    origin: function (origin?: string, callback?: any) {
+        if (origin && whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    },
+}
+
 export const expressApiApp = (client: Client) => {
     const app = express()
 
-    app.use(cors({
-        origin: 'http://localhost:4000',
-        credentials: true,
-    }))
+    app.use(cors(corsOptions))
     app.use(helmet())
 
     app.use('/oauth', oauthRouterMiddleware(client))
