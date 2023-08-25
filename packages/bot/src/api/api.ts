@@ -16,7 +16,7 @@ declare global {
 
 var whitelist = [
     'http://localhost:4000',
-    'https://dev-test.bigpoint-discord.net/',
+    'https://dev-test.bigpoint-discord.net',
 ]
 var corsOptions = {
     origin: function (origin?: string, callback?: any) {
