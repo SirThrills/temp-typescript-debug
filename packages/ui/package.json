@@ -3,7 +3,7 @@
     "packageManager": "yarn@3.6.1",
     "type": "module",
     "scripts": {
-        "watch": "node watcher.js",
+        "build": "parcel build src/index.html",
         "dev": "parcel -p 4000 src/index.html"
     },
     "devDependencies": {
@@ -24,6 +24,7 @@
         "jquery": "^3.7.0",
         "js-cookie": "^3.0.5",
         "react": "^18.2.0",
+        "react-bootstrap": "^2.8.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.6.1",
         "zustand": "^4.4.1"

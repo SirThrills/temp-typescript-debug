@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react"
-import { Loading } from "../manager/Loading"
-import { ManagerUI } from "../manager/ManagerUI"
-import { useApiStore } from "../../stores/api"
-import { useAuthStore } from "../../stores/auth"
-import { useGuildStore } from "../../stores/guild"
-import { GuildPermission, GuildRole, Permission } from "../../types"
+import React, { useEffect, useState } from 'react'
+import { Loading } from '../manager/Loading'
+import { ManagerUI } from '../manager/ManagerUI'
+import { useApiStore } from '../../stores/api'
+import { useAuthStore } from '../../stores/auth'
+import { useGuildStore } from '../../stores/guild'
+import { GuildPermission, GuildRSS, GuildRole, Permission } from '../../types'
 
 export const GuildManager = () => {
     const guildStore = useGuildStore()
@@ -19,17 +19,43 @@ export const GuildManager = () => {
 
         setLoading(true)
         const loadGuild = async (guildId: string) => {
-            const guildPermissions = await apiStore.apiGet<GuildPermission[]>(`/guilds/${guildId}/permissions`, authToken)
+            const guildPermissions = await apiStore.apiGet<GuildPermission[]>(
+                `/guilds/${guildId}/permissions`,
+                authToken
+            )
             if (guildPermissions == null) {
                 return setLoading(false)
             }
 
             guildStore.setPermissions(guildPermissions)
 
-            if (guildPermissions.find((guildPermission) => guildPermission.permission === Permission.VIEW_ROLES)) {
-                const guildRoles = await apiStore.apiGet<GuildRole[]>(`/guilds/${guildId}/roles`, authToken)
+            if (
+                guildPermissions.find(
+                    (guildPermission) =>
+                        guildPermission.permission === Permission.VIEW_ROLES
+                )
+            ) {
+                const guildRoles = await apiStore.apiGet<GuildRole[]>(
+                    `/guilds/${guildId}/roles`,
+                    authToken
+                )
                 if (guildRoles) {
                     guildStore.setRoles(guildRoles)
+                }
+            }
+
+            if (
+                guildPermissions.find(
+                    (guildPermission) =>
+                        guildPermission.permission === Permission.VIEW_RSS
+                )
+            ) {
+                const guildRss = await apiStore.apiGet<GuildRSS[]>(
+                    `/guilds/${guildId}/rss/feeds`,
+                    authToken
+                )
+                if (guildRss) {
+                    guildStore.setRss(guildRss)
                 }
             }
 

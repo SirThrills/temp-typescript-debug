@@ -8,5 +8,6 @@
             ],
             "icon": "terminal-bash"
         }
-    }
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
