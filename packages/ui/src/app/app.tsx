@@ -49,7 +49,8 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<RootLayout />} errorElement={<RootError />}>
             {/* special unprotected routes */}
-            <Route path="login" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/login/" element={<Login />} />
 
             {/* rest of the authenticated routes */}
             <Route element={<AuthenticatedRoute />}>
@@ -66,8 +67,7 @@ const router = createBrowserRouter(
 )
 
 const App = () => {
-    console.log(process.env.API_URL)
-    //useApiStore().setApiUrl(process.env.API_URL || null)
+    console.log(`API host: ${process.env.API_URL}`)
     return (
         <React.StrictMode>
             <RouterProvider router={router}></RouterProvider>
