@@ -1,4 +1,4 @@
-import { Permission, PermissionItem } from '../../types'
+import { PermissionItem, Permission } from 'lib-types'
 import { mysqlClient } from './client'
 
 export const getPermissionsForGuild = async (

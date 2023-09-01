@@ -8,10 +8,10 @@ import {
     getPermissionsForGuild,
     getPermissionsForGuildRole,
 } from '../helpers/database/permissions'
-import { Permission } from '../types'
 import { authMiddleware } from './middleware'
 import { getGuildRssFeed, getGuildRssFeeds } from '../helpers/database/rss'
 import { userHasPermission } from '../helpers/permission'
+import { Permission } from 'lib-types'
 
 export const guildsRouterHandler = (client: Client) => {
     const guildsRouter = Router()

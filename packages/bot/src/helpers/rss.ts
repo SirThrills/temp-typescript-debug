@@ -1,14 +1,22 @@
-import Parser from "rss-parser";
-import { GuildRssFeedItem, GuildRssPostItem } from "../types";
-import { ChannelType, Client, Guild } from "discord.js";
-import { createEmbed } from "./embed";
-import { addGuildRssPost, getGuildRssFeedLastPost, addGuildRssPostQueue, getGuildRssQueue, getGuildRssPost, removeGuildRssPostQueueItem, getGuildRssFeed } from "./database/rss";
+import Parser from 'rss-parser'
+import { ChannelType, Client, Guild } from 'discord.js'
+import { createEmbed } from './embed'
+import {
+    addGuildRssPost,
+    getGuildRssFeedLastPost,
+    addGuildRssPostQueue,
+    getGuildRssQueue,
+    getGuildRssPost,
+    removeGuildRssPostQueueItem,
+    getGuildRssFeed,
+} from './database/rss'
+import { GuildRssFeedItem, GuildRssPostItem } from 'lib-types'
 //import parse from "node-html-parser";
 
 const parser = new Parser({
     customFields: {
-        item: ['slash:comments']
-    }
+        item: ['slash:comments'],
+    },
 })
 
 const stripTags = (str: string) => {
@@ -21,9 +29,14 @@ const stripTags = (str: string) => {
     return 'N/A'
 }
 
-export const processRssItem = async (item: {
-    [key: string]: any;
-} & Parser.Item, feed: GuildRssFeedItem, guild: Guild, lastPost?: GuildRssPostItem) => {
+export const processRssItem = async (
+    item: {
+        [key: string]: any
+    } & Parser.Item,
+    feed: GuildRssFeedItem,
+    guild: Guild,
+    lastPost?: GuildRssPostItem
+) => {
     if (!item.pubDate || !item.link || !item.title) {
         return
     }
@@ -51,7 +64,14 @@ export const processRssItem = async (item: {
         contentString = stripTags(content)
     }
     console.log('adding post', item.title)
-    await addGuildRssPost(feed.id, item.link, item.title, contentString, postDate, imageUrl)
+    await addGuildRssPost(
+        feed.id,
+        item.link,
+        item.title,
+        contentString,
+        postDate,
+        imageUrl
+    )
     const post = await getGuildRssFeedLastPost(feed.id)
     if (post == null) {
         return
@@ -59,13 +79,19 @@ export const processRssItem = async (item: {
     await addGuildRssPostQueue(post.id, guild.id)
 }
 
-export const processGuildRssFeed = async (guild: Guild, feeds: GuildRssFeedItem[]) => {
+export const processGuildRssFeed = async (
+    guild: Guild,
+    feeds: GuildRssFeedItem[]
+) => {
     feeds.forEach(async (feed) => {
         if (!feed.enabled) {
             return
         }
         try {
-            const promises = Promise.all([getGuildRssFeedLastPost(feed.id), parser.parseURL(feed.rss_url)])
+            const promises = Promise.all([
+                getGuildRssFeedLastPost(feed.id),
+                parser.parseURL(feed.rss_url),
+            ])
             const [lastPost, rssFeed] = await promises
             if (rssFeed.items == null || rssFeed.items.length === 0) {
                 return
@@ -73,7 +99,12 @@ export const processGuildRssFeed = async (guild: Guild, feeds: GuildRssFeedItem[
 
             if (lastPost == null) {
                 console.log('no lastpost for feed id', feed.id)
-                return await processRssItem(rssFeed.items[0], feed, guild, lastPost)
+                return await processRssItem(
+                    rssFeed.items[0],
+                    feed,
+                    guild,
+                    lastPost
+                )
             }
             rssFeed.items.reverse().forEach(async (item) => {
                 await processRssItem(item, feed, guild, lastPost)
@@ -98,18 +129,41 @@ export const processGuildRssQueue = async (client: Client, guild: Guild) => {
                 return
             }
             await removeGuildRssPostQueueItem(postQueueItem.id)
-            const rssFeedInfo = await getGuildRssFeed(guild.id, post.forum_rss_id)
+            const rssFeedInfo = await getGuildRssFeed(
+                guild.id,
+                post.forum_rss_id
+            )
             if (rssFeedInfo == null) {
                 return
             }
 
-            const channel = client.channels.cache.find((channel) => channel.id === rssFeedInfo.channel_id)
+            const channel = client.channels.cache.find(
+                (channel) => channel.id === rssFeedInfo.channel_id
+            )
             if (channel == null || channel.type !== ChannelType.GuildText) {
                 return
             }
 
-            const fields = [{ name: post.post_content ? 'New Forum Thread' : 'New Forum Post', value: post.post_content ? 'A new thread has been created' : 'A new post has been added to the the thread.' }, { name: 'Link', value: post.post_url }]
-            const embed = createEmbed({ title: post.post_id, color: rssFeedInfo.embed_color ?? null, url: post.post_url, thumbnail: rssFeedInfo.embed_image, image: post.post_image, fields, timestamp: true })
+            const fields = [
+                {
+                    name: post.post_content
+                        ? 'New Forum Thread'
+                        : 'New Forum Post',
+                    value: post.post_content
+                        ? 'A new thread has been created'
+                        : 'A new post has been added to the the thread.',
+                },
+                { name: 'Link', value: post.post_url },
+            ]
+            const embed = createEmbed({
+                title: post.post_id,
+                color: rssFeedInfo.embed_color ?? null,
+                url: post.post_url,
+                thumbnail: rssFeedInfo.embed_image,
+                image: post.post_image,
+                fields,
+                timestamp: true,
+            })
             let content
             if (rssFeedInfo.ping_role_id) {
                 content = `<@&${rssFeedInfo.ping_role_id}>`

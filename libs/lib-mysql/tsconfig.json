@@ -1,0 +1,14 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "composite": true,
+        "noEmit": false,
+        "allowSyntheticDefaultImports": true,
+        "outDir": "dist",
+        "target": "esnext",
+        "module": "commonjs"
+    },
+    "include": ["src/**/*"],
+    "exclude": [".yarn/**/*", "dist/**/*", "node_modules/**/*"],
+    "references": [{ "path": "../../libs/lib-types" }]
+}

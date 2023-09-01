@@ -4,7 +4,8 @@
         "build": "tsc --build"
     },
     "workspaces": [
-        "packages/*"
+        "packages/*",
+        "libs/*"
     ],
     "packageManager": "yarn@3.6.1",
     "devDependencies": {

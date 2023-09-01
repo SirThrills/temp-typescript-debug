@@ -1,9 +1,8 @@
-import { Client, Guild } from "discord.js";
-import { processGuildRssFeed, processGuildRssQueue } from "./rss";
-import { getGuildRssFeeds } from "./database/rss";
+import { Client, Guild } from 'discord.js'
+import { processGuildRssFeed, processGuildRssQueue } from './rss'
+import { getGuildRssFeeds } from './database/rss'
 
-const processGuildUpdates = async (guild: Guild) => {
-}
+const processGuildUpdates = async (guild: Guild) => {}
 
 export const processGuildsUpdates = async (client: Client) => {
     if (!client.isReady()) {

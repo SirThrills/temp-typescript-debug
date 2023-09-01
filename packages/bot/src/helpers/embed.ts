@@ -1,5 +1,5 @@
-import { EmbedBuilder } from "discord.js"
-import { EmbedItem } from "../types"
+import { EmbedBuilder } from 'discord.js'
+import { EmbedItem } from 'lib-types'
 
 export const createEmbed = (embedItem: EmbedItem) => {
     const embed = new EmbedBuilder()

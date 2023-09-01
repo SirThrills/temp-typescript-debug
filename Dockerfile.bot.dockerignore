@@ -1,9 +1,5 @@
-.dist
-sql
-.vscode
-.github
-.gitignore
-node_modules
+*
+
 .yarn/*
 !.yarn/cache
 !.yarn/patches
@@ -11,13 +7,15 @@ node_modules
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-docker-compose.yaml
 
-packages/*
-!packages/bot
+!package.json
+!yarn.lock
+!.yarnrc.yml
+!tsconfig.json
 
-yarn-error.log
-.git
-Dockerfile*
-.env.default
-.parcel-cache
+!packages/bot/package.json
+!packages/bot/tsconfig.json
+!packages/bot/src/*
+!packages/lib-*/package.json
+!packages/lib-*/tsconfig.json
+!packages/lib-*/src/*

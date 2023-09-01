@@ -1,11 +1,15 @@
-import { AuditLogEvent, Client, GuildAuditLogsEntry, GuildBan } from "discord.js";
+import { AuditLogEvent, Client, GuildBan } from 'discord.js'
 
-export const getBanAuditLogAuthor = async (client: Client, ban: GuildBan, type: AuditLogEvent) => {
-    const guild = client.guilds.cache.find(guild => guild.id === ban.guild.id)
+export const getBanAuditLogAuthor = async (
+    client: Client,
+    ban: GuildBan,
+    type: AuditLogEvent
+) => {
+    const guild = client.guilds.cache.find((guild) => guild.id === ban.guild.id)
     if (guild == null) {
         return
     }
-    const logs = await guild.fetchAuditLogs({ type, limit: 1, })
+    const logs = await guild.fetchAuditLogs({ type, limit: 1 })
     if (logs == null || logs.entries.size === 0) {
         return
     }

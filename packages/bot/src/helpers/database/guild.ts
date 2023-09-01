@@ -1,15 +1,27 @@
-import { Client, Guild } from "discord.js";
-import { mysqlClient } from "./client";
-import { ChannelLogRecordType, GuildItem, GuildRssFeedItem, GuildRssPostItem, GuildRssQueueItem } from "../../types";
-import { addChannelLogRecord } from "../channelLogging";
+import { Client, Guild } from 'discord.js'
+import { mysqlClient } from './client'
+import { addChannelLogRecord } from '../channelLogging'
+import { ChannelLogRecordType, GuildItem } from 'lib-types'
 
 export const updateActiveGuilds = async (client: Client) => {
     const guilds = client.guilds.cache
     const dbGuilds = await getDatabaseGuilds()
     for (const guild of guilds) {
-        if (dbGuilds && dbGuilds.find((dbGuild) => dbGuild.guild_id === guild[1].id)) {
+        if (
+            dbGuilds &&
+            dbGuilds.find((dbGuild) => dbGuild.guild_id === guild[1].id)
+        ) {
             await updateGuild(guild[1])
-            await addChannelLogRecord(client, { guild: guild[1].id, type: ChannelLogRecordType.SYSTEM, fields: [{ name: 'Guild Metadata Updated', value: 'Database metadata updated for this guild' }] })
+            await addChannelLogRecord(client, {
+                guild: guild[1].id,
+                type: ChannelLogRecordType.SYSTEM,
+                fields: [
+                    {
+                        name: 'Guild Metadata Updated',
+                        value: 'Database metadata updated for this guild',
+                    },
+                ],
+            })
             continue
         }
         await addGuild(guild[1])
@@ -40,14 +52,20 @@ export const getDatabaseGuilds = async () => {
 export const addGuild = async (guild: Guild) => {
     console.log('Adding guild:', guild.id)
     const client = (await mysqlClient()).getConn()
-    await client.query<any[]>('INSERT INTO `guilds` (`guild_id`, `guild_name`, `guild_icon`) VALUES (?,?,?)', [guild.id, guild.name, guild.iconURL()])
+    await client.query<any[]>(
+        'INSERT INTO `guilds` (`guild_id`, `guild_name`, `guild_icon`) VALUES (?,?,?)',
+        [guild.id, guild.name, guild.iconURL()]
+    )
     await client.end()
 }
 
 export const updateGuild = async (guild: Guild) => {
     console.log('Updating guild:', guild.id)
     const client = (await mysqlClient()).getConn()
-    await client.execute('UPDATE `guilds` SET `guild_name` = ?, `guild_icon` = ? WHERE `guild_id` = ?', [guild.name, guild.iconURL(), guild.id])
+    await client.execute(
+        'UPDATE `guilds` SET `guild_name` = ?, `guild_icon` = ? WHERE `guild_id` = ?',
+        [guild.name, guild.iconURL(), guild.id]
+    )
     await client.end()
 }
 
