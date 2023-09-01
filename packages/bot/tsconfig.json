@@ -1,0 +1,14 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "noEmit": false,
+        "outDir": "dist"
+    },
+    "include": ["src/**/*"],
+    "exclude": [".yarn/**/*", "dist/**/*", "node_modules/**/*"],
+    "references": [
+        { "path": "../../libs/lib-mysql" },
+        { "path": "../../libs/lib-types" }
+    ]
+}

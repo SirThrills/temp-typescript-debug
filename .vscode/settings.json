@@ -1,0 +1,13 @@
+{
+    "editor.formatOnSave": true,
+    "terminal.integrated.profiles.linux": {
+        "bash (login)": {
+            "path": "bash",
+            "args": [
+                "-l"
+            ],
+            "icon": "terminal-bash"
+        }
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+}

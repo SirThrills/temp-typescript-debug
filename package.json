@@ -1,0 +1,14 @@
+{
+    "name": "private-discord-bot",
+    "scripts": {
+        "build": "tsc --build"
+    },
+    "workspaces": [
+        "packages/*",
+        "libs/*"
+    ],
+    "packageManager": "yarn@3.6.1",
+    "devDependencies": {
+        "prettier": "^3.0.2"
+    }
+}
