@@ -2,7 +2,7 @@
     "name": "bot",
     "version": "0.0.1",
     "scripts": {
-        "build": "yarn tsc --build"
+        "build": "yarn tsc --project tsconfig.json"
     },
     "devDependencies": {
         "@types/cors": "^2.8.13",

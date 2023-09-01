@@ -1,8 +1,14 @@
 {
     "name": "lib-types",
-    "main": "src/index.ts",
-    "type": "module",
+    "main": "lib/src/index.js",
+    "type": "commonjs",
+    "scripts": {
+        "build": "yarn tsc --project ./tsconfig.json"
+    },
     "dependencies": {
         "discord.js": "^14.12.1"
+    },
+    "devDependencies": {
+        "typescript": "^5.2.2"
     }
 }

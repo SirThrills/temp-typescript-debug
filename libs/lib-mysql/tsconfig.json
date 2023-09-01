@@ -4,8 +4,8 @@
         "composite": true,
         "noEmit": false,
         "allowSyntheticDefaultImports": true,
-        "outDir": "dist",
-        "target": "esnext",
+        "outDir": "lib",
+        "target": "es5",
         "module": "commonjs"
     },
     "include": ["src/**/*"],
