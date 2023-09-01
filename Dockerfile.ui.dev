@@ -1,9 +1,0 @@
-FROM node:20-slim
-
-WORKDIR /opt/app
-COPY . .
-RUN yarn install
-
-WORKDIR /opt/app/packages/ui
-
-CMD ["yarn", "dev"]
