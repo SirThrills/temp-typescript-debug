@@ -5,8 +5,7 @@
         "noEmit": false,
         "allowSyntheticDefaultImports": true,
         "outDir": "lib",
-        "target": "es5",
-        "module": "commonjs"
+        "rootDir": "src"
     },
     "include": ["src/**/*"],
     "exclude": [".yarn/**/*", "dist/**/*", "node_modules/**/*"],

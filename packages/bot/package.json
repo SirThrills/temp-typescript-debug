@@ -5,6 +5,7 @@
     "build": "yarn tsc --project tsconfig.json"
   },
   "devDependencies": {
+    "@types/dotenv": "^8.2.0",
     "lib-types": "workspace:*",
     "typescript": "^5.1.6"
   },

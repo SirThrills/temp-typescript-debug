@@ -101,6 +101,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/dotenv@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "@types/dotenv@npm:8.2.0"
+  dependencies:
+    dotenv: "*"
+  checksum: a1f524da7dc18b09bdb6c2613b9abbbe8ca575621cce4625efc7f98daf2ba07c7dbab622c9bb394507a12c5c515f9cbbbba4aeec17b801c88faeb8e8e656d460
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 20.4.8
   resolution: "@types/node@npm:20.4.8"
@@ -128,6 +137,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "bot@workspace:packages/bot"
   dependencies:
+    "@types/dotenv": ^8.2.0
     lib-mysql: "workspace:*"
     lib-types: "workspace:*"
     typescript: ^5.1.6
@@ -176,6 +186,13 @@ __metadata:
     undici: ^5.22.1
     ws: ^8.13.0
   checksum: 059c6c2fdec22319e8aa8d5f54392db0066e959a7418440d1dab3b0e7814b0c4a7311ed15500147e959f9409e63e2dbe0b1f159f9c2693d8cd321a216b92fdaf
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:*":
+  version: 16.3.1
+  resolution: "dotenv@npm:16.3.1"
+  checksum: 15d75e7279018f4bafd0ee9706593dd14455ddb71b3bcba9c52574460b7ccaf67d5cf8b2c08a5af1a9da6db36c956a04a1192b101ee102a3e0cf8817bbcf3dfd
   languageName: node
   linkType: hard
 
